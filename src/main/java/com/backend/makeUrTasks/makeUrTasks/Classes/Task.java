@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Task extends AbstractTask {
 
-  public Task(String title, String description, float id, float userId) {
+  public Task(String title, String description, Integer id, Integer userId) {
     super(title, description, id, userId);
   }
 

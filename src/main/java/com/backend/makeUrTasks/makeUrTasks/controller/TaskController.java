@@ -1,17 +1,22 @@
 package com.backend.makeUrTasks.makeUrTasks.controller;
 
-import com.backend.makeUrTasks.makeUrTasks.dto.TarefaDto;
+import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
+import com.backend.makeUrTasks.makeUrTasks.dto.TaskRequestDto;
+import com.backend.makeUrTasks.makeUrTasks.dto.TaskResponseDto;
 import com.backend.makeUrTasks.makeUrTasks.service.TaskService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Controller das Tarefas.
  */
 @RestController
-@RequestMapping("/tarefas")
+@RequestMapping("/task")
 public class TaskController {
 
   private final TaskService taskService;
@@ -27,9 +32,15 @@ public class TaskController {
   /**
    * Retorna as tarefas.
    */
-  @GetMapping
-  public String tarefas () {
-    return "Olá mundo!";
+  @GetMapping(path = "/list/{page}")
+  public ResponseEntity<List<TaskResponseDto>> listTasks (@PathVariable Integer page) {
+
+    List<AbstractTask> tasks = this.taskService.listTasks(1, page);
+
+    List<TaskResponseDto> tasksDto = tasks.stream().map(TaskResponseDto::new).toList();
+
+    return ResponseEntity.status(HttpStatus.OK).body(tasksDto);
+
   }
 
   /**
@@ -44,15 +55,19 @@ public class TaskController {
    * Retorna uma tarefa que tenha o nome correspondente ao passado por parâmetro.
    * Exemplo: <a href="http://localhost:8080/tarefas/procurar&titulo=corrida">...</a>.
    */
-  @GetMapping(path = "/procurar/{titulo}")
-  public String procurarTarefa (@PathVariable String titulo) {
-    return "Você pediu pela tarefa de nome: %s".formatted(titulo);
+  @GetMapping(path = "/search/{title}")
+  public String procurarTarefa (@PathVariable String title) {
+    return "Você pediu pela tarefa de nome: %s".formatted(title);
   }
 
   @PostMapping()
-  public ResponseEntity<TarefaDto> criarTarefa (@RequestBody String titulo) {
-    TarefaDto tarefa = this.taskService.novaTarefa(titulo);
-    return ResponseEntity.status(HttpStatus.CREATED).body(tarefa);
+  public ResponseEntity<TaskResponseDto> createTask (@RequestBody TaskRequestDto request) throws BadRequestException {
+
+    AbstractTask task = this.taskService.createTask(request.title, request.description, request.userId);
+    TaskResponseDto taskDto = new TaskResponseDto(task);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(taskDto);
+
   }
 
 }
