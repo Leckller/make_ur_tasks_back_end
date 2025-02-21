@@ -7,8 +7,8 @@ import java.util.Date;
  */
 public abstract class AbstractTask {
 
-  private float id;
-  private float userId;
+  private Integer id;
+  private Integer userId;
 
   private String title;
   private boolean finished;
@@ -19,27 +19,28 @@ public abstract class AbstractTask {
   private String description;
   private String conclusionNotes;
 
-  public AbstractTask(String title, String description, float id, float userId) {
+  public AbstractTask(String title, String description, Integer id, Integer userId) {
     this.title = title;
     this.description = description;
     this.createdAt = new Date();
+    this.updatedAt = new Date();
     this.id = id;
     this.userId = userId;
   }
 
-  public float getUserId() {
+  public Integer getUserId() {
     return userId;
   }
 
-  public void setUserId(float userId) {
+  public void setUserId(Integer userId) {
     this.userId = userId;
   }
 
-  public float getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(float id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -63,7 +64,7 @@ public abstract class AbstractTask {
     return description;
   }
 
-  public String getTitulo() {
+  public String getTitle() {
     return title;
   }
 
@@ -71,7 +72,7 @@ public abstract class AbstractTask {
     this.conclusionNotes = conclusionNotes;
   }
 
-  public void setTitulo(String title) {
+  public void setTitle(String title) {
     this.title = title;
   }
 
