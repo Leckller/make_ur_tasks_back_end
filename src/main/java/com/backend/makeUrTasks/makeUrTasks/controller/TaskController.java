@@ -46,7 +46,7 @@ public class TaskController {
   /**
    * Retorna uma tarefa que tenha o "id" passado por parâmetro.
    */
-  @GetMapping(path = "/{id}")
+  @GetMapping(path = "/id/{id}")
   public String pegarTarefaPeloId (@PathVariable long id) {
     return "Você pediu pela tarefa de id: %d".formatted(id);
   }
@@ -55,7 +55,7 @@ public class TaskController {
    * Retorna uma tarefa que tenha o nome correspondente ao passado por parâmetro.
    * Exemplo: <a href="http://localhost:8080/tarefas/procurar&titulo=corrida">...</a>.
    */
-  @GetMapping(path = "/search/{title}")
+  @GetMapping(path = "/title/{title}")
   public String procurarTarefa (@PathVariable String title) {
     return "Você pediu pela tarefa de nome: %s".formatted(title);
   }
