@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Service das Tarefas.
@@ -51,7 +52,13 @@ public class TaskService {
       throw new InvalidFieldsException("title must be a string.");
     }
 
-    return this.taskRepo.findByTitle(title, userId).orElseThrow(TaskNotFoundException::new);
+    Optional<AbstractTask> task = this.taskRepo.findByTitle(title, userId);
+
+    if(task.isEmpty()){
+      throw new TaskNotFoundException();
+    }
+
+    return task.get();
 
   }
 

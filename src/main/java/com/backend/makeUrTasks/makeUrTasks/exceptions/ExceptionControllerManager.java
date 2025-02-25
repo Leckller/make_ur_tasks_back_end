@@ -33,7 +33,7 @@ public class ExceptionControllerManager {
   public ResponseEntity<String> handlerDefault(Exception exception) {
     return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(exception.getMessage());
+            .body("Erro interno não tratado - " + exception.getMessage());
   }
 
 

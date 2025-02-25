@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -34,12 +35,9 @@ public class TaskRepository implements TaskRepositoryInterface {
   @Override
   public Optional<AbstractTask> findById(Integer taskId, Integer userId) {
 
-    AbstractTask task = this.tasks.stream()
-            .filter(t -> t.getId() == taskId && t.getUserId() == userId)
-            .findFirst()
-            .orElse(null);
-
-    return Optional.ofNullable(task);
+    return this.tasks.stream()
+            .filter(t -> Objects.equals(t.getId(), taskId) && Objects.equals(t.getUserId(), userId))
+            .findFirst();
 
   }
 

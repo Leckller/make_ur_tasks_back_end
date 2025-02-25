@@ -3,8 +3,8 @@ package com.backend.makeUrTasks.makeUrTasks.service;
 import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
 import com.backend.makeUrTasks.makeUrTasks.classes.Task;
 import com.backend.makeUrTasks.makeUrTasks.exceptions.InvalidFieldsException;
+import com.backend.makeUrTasks.makeUrTasks.exceptions.TaskNotFoundException;
 import com.backend.makeUrTasks.makeUrTasks.repository.TaskRepository;
-import com.backend.makeUrTasks.makeUrTasks.repository.TaskRepositoryTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -28,6 +28,21 @@ public class TaskServiceTest {
 
   @Autowired
   private TaskService service;
+
+  @Test
+  @DisplayName("GET_BY_ID - Testa se lança um exception caso a tarefa esteja vazia")
+  void getByIdNotFoundTest () {
+
+    Mockito.when(
+      mockedRepo.findById(any(), any())
+    ).thenReturn(Optional.empty());
+
+    assertThrows(
+      TaskNotFoundException.class,
+      () -> service.getTaskById(1, 1)
+    );
+
+  }
 
   @Test
   @DisplayName("Testa a listagem de tarefas")
