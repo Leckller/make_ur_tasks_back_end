@@ -1,6 +1,6 @@
 package com.backend.makeUrTasks.makeUrTasks.controller;
 
-import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
+import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
 import com.backend.makeUrTasks.makeUrTasks.dto.TaskRequestDto;
 import com.backend.makeUrTasks.makeUrTasks.dto.TaskResponseDto;
 import com.backend.makeUrTasks.makeUrTasks.service.TaskService;
@@ -61,7 +61,7 @@ public class TaskController {
   }
 
   @PostMapping()
-  public ResponseEntity<TaskResponseDto> createTask (@RequestBody TaskRequestDto request) throws BadRequestException {
+  public ResponseEntity<TaskResponseDto> createTask (@RequestBody TaskRequestDto request) {
 
     AbstractTask task = this.taskService.createTask(request.title, request.description, request.userId);
     TaskResponseDto taskDto = new TaskResponseDto(task);

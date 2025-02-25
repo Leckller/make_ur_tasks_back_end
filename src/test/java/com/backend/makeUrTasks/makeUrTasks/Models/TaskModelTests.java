@@ -1,7 +1,7 @@
 package com.backend.makeUrTasks.makeUrTasks.Models;
 
-import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
-import com.backend.makeUrTasks.makeUrTasks.model.TaskModel;
+import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
+import com.backend.makeUrTasks.makeUrTasks.repository.TaskModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

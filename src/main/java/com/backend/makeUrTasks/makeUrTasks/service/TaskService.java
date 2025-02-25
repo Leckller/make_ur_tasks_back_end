@@ -1,13 +1,14 @@
 package com.backend.makeUrTasks.makeUrTasks.service;
 
-import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
+import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
 import com.backend.makeUrTasks.makeUrTasks.exceptions.InvalidFieldsException;
-import com.backend.makeUrTasks.makeUrTasks.model.TaskModel;
+import com.backend.makeUrTasks.makeUrTasks.exceptions.TaskNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.repository.TaskRepository;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Service das Tarefas.
@@ -15,22 +16,22 @@ import java.util.List;
 @Service
 public class TaskService {
 
-  private final TaskModel taskModel;
+  private final TaskRepository taskRepo;
 
   /**
    * Construtor da classe, aqui é injetado a model.
    */
   @Autowired
-  public TaskService (TaskModel taskModel){
-    this.taskModel = taskModel;
+  public TaskService (TaskRepository taskRepo){
+    this.taskRepo = taskRepo;
   }
 
-  public List<AbstractTask> listTasks (Integer userId, Integer page) {
+  public ArrayList<AbstractTask> listTasks (Integer userId, Integer page) {
     if (userId < 0) {
       throw new InvalidFieldsException("userId must be a Integer");
     }
 
-    return this.taskModel.find(userId, page);
+    return this.taskRepo.find(userId, page).orElseThrow(TaskNotFoundException::new);
 
   }
 
@@ -39,11 +40,11 @@ public class TaskService {
       throw new InvalidFieldsException("userId or taskId must be a Integer");
     }
 
-    return this.taskModel.findById(taskId, userId);
+    return this.taskRepo.findById(taskId, userId).orElseThrow(TaskNotFoundException::new);
 
   }
 
-  public AbstractTask createTask (String title, String description, Integer userId) throws BadRequestException {
+  public AbstractTask createTask (String title, String description, Integer userId) {
 
     if (title == null) {
       throw new InvalidFieldsException("title must be a string");
@@ -53,7 +54,7 @@ public class TaskService {
       throw new InvalidFieldsException("userId must be a Integer");
     }
 
-    return this.taskModel.create(title, userId, description);
+    return this.taskRepo.create(title, userId, description).orElseThrow(TaskNotFoundException::new);
 
   }
 

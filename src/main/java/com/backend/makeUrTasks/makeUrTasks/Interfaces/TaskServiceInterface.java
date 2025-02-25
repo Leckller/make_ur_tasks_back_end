@@ -1,6 +1,6 @@
 package com.backend.makeUrTasks.makeUrTasks.Interfaces;
 
-import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
+import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
 
 import java.util.ArrayList;
 
