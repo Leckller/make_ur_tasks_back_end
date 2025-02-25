@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionControllerManager {
 
   @ExceptionHandler({
-    UserNotFoundException.class
+    UserNotFoundException.class,
+    TaskNotFoundException.class
   })
   public ResponseEntity<String> handleUserNotFound(Exception exception) {
     return ResponseEntity
