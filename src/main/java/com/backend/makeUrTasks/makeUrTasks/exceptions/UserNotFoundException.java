@@ -1,4 +1,4 @@
-package com.backend.makeUrTasks.makeUrTasks.Exceptions;
+package com.backend.makeUrTasks.makeUrTasks.exceptions;
 
 public class UserNotFoundException extends RuntimeException{
 

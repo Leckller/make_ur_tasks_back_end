@@ -1,15 +1,13 @@
 package com.backend.makeUrTasks.makeUrTasks.service;
 
 import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
-import com.backend.makeUrTasks.makeUrTasks.Exceptions.InvalidFieldsException;
+import com.backend.makeUrTasks.makeUrTasks.exceptions.InvalidFieldsException;
 import com.backend.makeUrTasks.makeUrTasks.model.TaskModel;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static org.apache.coyote.http11.Constants.a;
 
 /**
  * Service das Tarefas.

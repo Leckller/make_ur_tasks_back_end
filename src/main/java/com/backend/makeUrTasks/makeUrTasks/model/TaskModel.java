@@ -1,7 +1,7 @@
 package com.backend.makeUrTasks.makeUrTasks.model;
 
 import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
-import com.backend.makeUrTasks.makeUrTasks.Classes.Task;
+import com.backend.makeUrTasks.makeUrTasks.classes.Task;
 import com.backend.makeUrTasks.makeUrTasks.Interfaces.TaskModelInterface;
 import org.springframework.stereotype.Component;
 
