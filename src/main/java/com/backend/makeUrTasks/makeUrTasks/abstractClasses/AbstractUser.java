@@ -1,4 +1,4 @@
-package com.backend.makeUrTasks.makeUrTasks.AbstractClasses;
+package com.backend.makeUrTasks.makeUrTasks.abstractClasses;
 
 public abstract class AbstractUser {
 
