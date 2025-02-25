@@ -1,6 +1,6 @@
 package com.backend.makeUrTasks.makeUrTasks.dto;
 
-import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
+import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;

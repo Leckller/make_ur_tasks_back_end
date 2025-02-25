@@ -1,8 +1,6 @@
-package com.backend.makeUrTasks.makeUrTasks.Classes;
+package com.backend.makeUrTasks.makeUrTasks.classes;
 
-import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
-
-import java.util.Date;
+import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
 
 public class Task extends AbstractTask {
 

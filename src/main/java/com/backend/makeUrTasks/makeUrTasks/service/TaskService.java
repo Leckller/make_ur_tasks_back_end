@@ -1,15 +1,15 @@
 package com.backend.makeUrTasks.makeUrTasks.service;
 
-import com.backend.makeUrTasks.makeUrTasks.AbstractClasses.AbstractTask;
-import com.backend.makeUrTasks.makeUrTasks.Exceptions.InvalidFieldsException;
-import com.backend.makeUrTasks.makeUrTasks.model.TaskModel;
+import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
+import com.backend.makeUrTasks.makeUrTasks.exceptions.InvalidFieldsException;
+import com.backend.makeUrTasks.makeUrTasks.exceptions.TaskNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.repository.TaskRepository;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-import static org.apache.coyote.http11.Constants.a;
+import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Service das Tarefas.
@@ -17,22 +17,22 @@ import static org.apache.coyote.http11.Constants.a;
 @Service
 public class TaskService {
 
-  private final TaskModel taskModel;
+  private final TaskRepository taskRepo;
 
   /**
    * Construtor da classe, aqui é injetado a model.
    */
   @Autowired
-  public TaskService (TaskModel taskModel){
-    this.taskModel = taskModel;
+  public TaskService (TaskRepository taskRepo){
+    this.taskRepo = taskRepo;
   }
 
-  public List<AbstractTask> listTasks (Integer userId, Integer page) {
-    if (userId < 0) {
-      throw new InvalidFieldsException("userId must be a Integer");
+  public ArrayList<AbstractTask> listTasks (Integer userId, Integer page) {
+    if (userId < 0 || page < 0) {
+      throw new InvalidFieldsException("userId or page must be a natural number");
     }
 
-    return this.taskModel.find(userId, page);
+    return this.taskRepo.find(userId, page).orElseThrow(TaskNotFoundException::new);
 
   }
 
@@ -41,11 +41,28 @@ public class TaskService {
       throw new InvalidFieldsException("userId or taskId must be a Integer");
     }
 
-    return this.taskModel.findById(taskId, userId);
+    return this.taskRepo.findById(taskId, userId).orElseThrow(TaskNotFoundException::new);
 
   }
 
-  public AbstractTask createTask (String title, String description, Integer userId) throws BadRequestException {
+  public AbstractTask getTaskByTitle (String title, Integer userId) {
+    if (userId <= 0) {
+      throw new InvalidFieldsException("userId must be a Integer.");
+    } if (title.isEmpty()) {
+      throw new InvalidFieldsException("title must be a string.");
+    }
+
+    Optional<AbstractTask> task = this.taskRepo.findByTitle(title, userId);
+
+    if(task.isEmpty()){
+      throw new TaskNotFoundException();
+    }
+
+    return task.get();
+
+  }
+
+  public AbstractTask createTask (String title, String description, Integer userId) {
 
     if (title == null) {
       throw new InvalidFieldsException("title must be a string");
@@ -55,7 +72,7 @@ public class TaskService {
       throw new InvalidFieldsException("userId must be a Integer");
     }
 
-    return this.taskModel.create(title, userId, description);
+    return this.taskRepo.create(title, userId, description).orElseThrow(TaskNotFoundException::new);
 
   }
 
