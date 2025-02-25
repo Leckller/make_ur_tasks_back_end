@@ -27,8 +27,8 @@ public class TaskService {
   }
 
   public ArrayList<AbstractTask> listTasks (Integer userId, Integer page) {
-    if (userId < 0) {
-      throw new InvalidFieldsException("userId must be a Integer");
+    if (userId < 0 || page < 0) {
+      throw new InvalidFieldsException("userId or page must be a natural number");
     }
 
     return this.taskRepo.find(userId, page).orElseThrow(TaskNotFoundException::new);
