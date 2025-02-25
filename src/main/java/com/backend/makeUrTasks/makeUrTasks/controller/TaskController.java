@@ -47,17 +47,26 @@ public class TaskController {
    * Retorna uma tarefa que tenha o "id" passado por parâmetro.
    */
   @GetMapping(path = "/id/{id}")
-  public String pegarTarefaPeloId (@PathVariable long id) {
-    return "Você pediu pela tarefa de id: %d".formatted(id);
+  public ResponseEntity<TaskResponseDto> getTaskById (@PathVariable Integer id) {
+
+    AbstractTask task = this.taskService.getTaskById(id, 1);
+    TaskResponseDto taskDto = new TaskResponseDto(task);
+
+    return  ResponseEntity.status(HttpStatus.OK).body(taskDto);
+
   }
 
   /**
    * Retorna uma tarefa que tenha o nome correspondente ao passado por parâmetro.
-   * Exemplo: <a href="http://localhost:8080/tarefas/procurar&titulo=corrida">...</a>.
    */
   @GetMapping(path = "/title/{title}")
-  public String procurarTarefa (@PathVariable String title) {
-    return "Você pediu pela tarefa de nome: %s".formatted(title);
+  public ResponseEntity<TaskResponseDto> getTaskByTitle (@PathVariable String title) {
+
+    AbstractTask task = this.taskService.getTaskByTitle(title, 1);
+    TaskResponseDto taskDto = new TaskResponseDto(task);
+
+    return  ResponseEntity.status(HttpStatus.OK).body(taskDto);
+
   }
 
   @PostMapping()

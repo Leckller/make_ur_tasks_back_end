@@ -52,8 +52,8 @@ public class TaskRepository implements TaskRepositoryInterface {
             .stream()
             .filter(t -> t.getUserId() == userId)
             .sorted((t, t2) -> t.getUpdatedAt().compareTo(t2.getUpdatedAt()))
+            .skip(10 * page)
             .limit(10)
-            .skip(10L * page)
             .toList();
 
     return Optional.ofNullable(new ArrayList<AbstractTask>(tasks));

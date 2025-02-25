@@ -44,6 +44,17 @@ public class TaskService {
 
   }
 
+  public AbstractTask getTaskByTitle (String title, Integer userId) {
+    if (userId <= 0) {
+      throw new InvalidFieldsException("userId must be a Integer.");
+    } if (title.isEmpty()) {
+      throw new InvalidFieldsException("title must be a string.");
+    }
+
+    return this.taskRepo.findByTitle(title, userId).orElseThrow(TaskNotFoundException::new);
+
+  }
+
   public AbstractTask createTask (String title, String description, Integer userId) {
 
     if (title == null) {
