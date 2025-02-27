@@ -1,4 +1,4 @@
-package com.backend.makeUrTasks.makeUrTasks.exceptions;
+package com.backend.makeUrTasks.makeUrTasks.service.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

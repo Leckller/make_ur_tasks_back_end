@@ -1,6 +1,6 @@
-package com.backend.makeUrTasks.makeUrTasks.dto;
+package com.backend.makeUrTasks.makeUrTasks.controller.dto;
 
-import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
+import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
@@ -35,7 +35,7 @@ public class TaskResponseDto {
   }
 
   public TaskResponseDto(
-    AbstractTask task
+    Task task
   ) {
     this.id = task.getId();
     this.title = task.getTitle();

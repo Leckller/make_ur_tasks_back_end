@@ -1,4 +1,4 @@
-package com.backend.makeUrTasks.makeUrTasks.dto;
+package com.backend.makeUrTasks.makeUrTasks.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

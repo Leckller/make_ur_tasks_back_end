@@ -1,12 +1,16 @@
-package com.backend.makeUrTasks.makeUrTasks.abstractClasses;
+package com.backend.makeUrTasks.makeUrTasks.repository.entity;
+
+import jakarta.persistence.*;
 
 import java.util.Date;
 
-/**
- * Interface da tarefa
- */
-public abstract class AbstractTask {
 
+@Entity
+@Table(name = "tasks")
+public class Task  {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private Integer userId;
 
@@ -19,7 +23,7 @@ public abstract class AbstractTask {
   private String description;
   private String conclusionNotes;
 
-  public AbstractTask(String title, String description, Integer id, Integer userId) {
+  public Task(String title, String description, Integer id, Integer userId) {
     this.title = title;
     this.description = description;
     this.createdAt = new Date();

@@ -1,4 +1,4 @@
-package com.backend.makeUrTasks.makeUrTasks.exceptions;
+package com.backend.makeUrTasks.makeUrTasks.service.exceptions;
 
 public class TaskNotFoundException extends RuntimeException {
     public TaskNotFoundException () {
