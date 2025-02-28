@@ -1,9 +1,9 @@
-package com.backend.makeUrTasks.makeUrTasks.controller.dto;
+package com.backend.makeUrTasks.makeUrTasks.controller.dto.Task;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TaskRequestDto {
+public class TaskCreationDto {
 
   public String title;
 
