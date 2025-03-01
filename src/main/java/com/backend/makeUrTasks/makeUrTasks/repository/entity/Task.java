@@ -1,6 +1,9 @@
 package com.backend.makeUrTasks.makeUrTasks.repository.entity;
 
+import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskCreationDto;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
@@ -12,33 +15,39 @@ public class Task  {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  private Integer userId;
 
   private String title;
-  private boolean finished;
+  private boolean finished = false;
 
+  @CreationTimestamp
   private Date createdAt;
+  @UpdateTimestamp
   private Date updatedAt;
 
   private String description;
   private String conclusionNotes;
 
-  public Task(String title, String description, Integer id, Integer userId) {
+  @ManyToOne(optional = false)
+  // Torna essa coluna responsável pelo relocionamento.
+  @JoinColumn(name = "user_id")
+  User user;
+
+  public Task(String title, String description, Integer id) {
     this.title = title;
     this.description = description;
     this.createdAt = new Date();
     this.updatedAt = new Date();
-    this.id = id;
-    this.userId = userId;
   }
 
-  public Integer getUserId() {
-    return userId;
+  public Task(TaskCreationDto taskCreationDto, User user) {
+    this.title = taskCreationDto.title;
+    this.description = taskCreationDto.description;
+    this.user = user;
   }
 
-  public void setUserId(Integer userId) {
-    this.userId = userId;
-  }
+  public User getUser() { return user; }
+
+  public void setUser(User user) { this.user = user; }
 
   public Integer getId() {
     return id;
