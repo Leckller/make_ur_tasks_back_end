@@ -45,7 +45,7 @@ public class TaskService {
   public Task createTask(TaskCreationDto taskCreationDto)
       throws UserNotFoundException {
 
-    User user = this.userService.findUserById(taskCreationDto.userId);
+    User user = this.userService.findUserById(taskCreationDto.userId());
 
     Task task = new Task(taskCreationDto, user);
 

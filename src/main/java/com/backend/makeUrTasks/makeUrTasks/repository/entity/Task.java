@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -20,9 +21,9 @@ public class Task  {
   private boolean finished = false;
 
   @CreationTimestamp
-  private Date createdAt;
+  private Date createdAt = new Date();
   @UpdateTimestamp
-  private Date updatedAt;
+  private Date updatedAt = new Date();
 
   private String description;
   private String conclusionNotes;
@@ -32,16 +33,19 @@ public class Task  {
   @JoinColumn(name = "user_id")
   User user;
 
-  public Task(String title, String description, Integer id) {
-    this.title = title;
-    this.description = description;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
+  @ManyToMany(mappedBy = "tasks")
+  private List<Tag> tags;
+
+  public Task() {}
+
+  public Task(TaskCreationDto taskCreationDto) {
+    this.title = taskCreationDto.title();
+    this.description = taskCreationDto.description();
   }
 
   public Task(TaskCreationDto taskCreationDto, User user) {
-    this.title = taskCreationDto.title;
-    this.description = taskCreationDto.description;
+    this.title = taskCreationDto.title();
+    this.description = taskCreationDto.description();
     this.user = user;
   }
 

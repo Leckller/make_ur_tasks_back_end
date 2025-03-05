@@ -1,15 +1,13 @@
-package com.backend.makeUrTasks.makeUrTasks.repository;
+package com.backend.makeUrTasks.makeUrTasks.repository.integration;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @DisplayName("TaskTestE2E Model Tests")
 @SpringBootTest
-
+@Testcontainers
 public class TaskRepositoryTest {
 
   @Test

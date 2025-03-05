@@ -13,11 +13,10 @@ public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Integer id;
-
-  String name;
-  String email;
-  String password;
+  private Integer id;
+  private String name;
+  private String email;
+  private String password;
 
   @CreationTimestamp
   private Date createdAt;
@@ -26,6 +25,11 @@ public class User {
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   List<Task> tasks;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+  List<Tag> tags;
+
+  public User() {}
 
   public User(UserCreationDto userCreationDto) {
     this.name = userCreationDto.name();

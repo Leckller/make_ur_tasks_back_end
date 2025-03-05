@@ -35,11 +35,11 @@ public class TaskController {
   /**
    * Retorna uma tarefa que tenha o "id" passado por parâmetro.
    */
-  @GetMapping()
-  public ResponseEntity<TaskResponseDto> getTaskById (@RequestBody TaskGetByIdDto taskGetByIdDto)
+  @GetMapping("/{taskId}/user/{userId}")
+  public ResponseEntity<TaskResponseDto> getTaskById (@PathVariable Integer taskId, @PathVariable Integer userId)
       throws UserNotFoundException, TaskNotFoundException, NoPermissionException {
 
-    Task task = this.taskService.findTaskById(taskGetByIdDto.userId(), taskGetByIdDto.id());
+    Task task = this.taskService.findTaskById(userId, taskId);
 
     return ResponseEntity
         .status(HttpStatus.OK)
