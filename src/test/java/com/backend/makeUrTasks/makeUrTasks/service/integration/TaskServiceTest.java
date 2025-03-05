@@ -73,11 +73,11 @@ public class TaskServiceTest {
 
     String url = "/task/1/user/1";
 
-    mockMvc.perform(
-        MockMvcRequestBuilders.get(url))
+    mockMvc.perform(MockMvcRequestBuilders.get(url))
         .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(task.getTitle())
-        );
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(task.getId()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(task.getTitle()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(task.getDescription()));
 
   }
 
