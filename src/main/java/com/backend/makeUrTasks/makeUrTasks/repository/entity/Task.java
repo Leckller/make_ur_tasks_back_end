@@ -43,6 +43,16 @@ public class Task  {
     this.description = taskCreationDto.description();
   }
 
+  // From json
+  public Task(Integer id, String title, String description, Boolean finished, Date created_at, Date updated_at) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.finished = finished;
+    this.createdAt = created_at;
+    this.updatedAt = updated_at;
+  }
+
   public Task(TaskCreationDto taskCreationDto, User user) {
     this.title = taskCreationDto.title();
     this.description = taskCreationDto.description();

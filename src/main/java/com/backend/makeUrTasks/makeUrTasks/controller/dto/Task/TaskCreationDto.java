@@ -6,5 +6,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public record TaskCreationDto (
     String title,
     String description,
-    int userId
-) {}
+    Integer userId
+) {
+
+  public static TaskCreationDto makeDto (String title, String description, Integer userId) {
+    return new TaskCreationDto(title, description, userId);
+  }
+
+}

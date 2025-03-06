@@ -48,10 +48,14 @@ public class TaskController {
   }
 
   @GetMapping("/list/{userId}")
-  public ResponseEntity<List<TaskResponseDto>> getTasks (@PathVariable Integer userId) {
+  public ResponseEntity<List<TaskResponseDto>> getTasks (@PathVariable Integer userId)
+      throws UserNotFoundException {
 
+    List<Task> tasks = this.taskService.listTasks(userId);
 
-
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(tasks.stream().map(TaskResponseDto::fromEntity).toList());
   }
 
   @PostMapping()

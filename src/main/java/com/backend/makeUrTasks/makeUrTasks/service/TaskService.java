@@ -64,8 +64,6 @@ public class TaskService {
       throws UserNotFoundException {
 
     User user = this.userService.findUserById(userId);
-    Pageable pageable = PageRequest.of(0, 10);
-    taskRepository.findAll(pageable);
 
     return user.getTasks();
 

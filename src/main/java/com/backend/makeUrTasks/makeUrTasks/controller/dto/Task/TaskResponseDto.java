@@ -2,6 +2,7 @@ package com.backend.makeUrTasks.makeUrTasks.controller.dto.Task;
 
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
@@ -27,6 +28,17 @@ public record TaskResponseDto (
         task.getUpdatedAt(),
         task.getDescription(),
         task.getId()
+    );
+  }
+
+  public static TaskResponseDto convert(TaskResponseDto taskResponseDto) {
+    return new TaskResponseDto(
+        taskResponseDto.title,
+        taskResponseDto.finished,
+        taskResponseDto.createdAt,
+        taskResponseDto.updatedAt,
+        taskResponseDto.description,
+        taskResponseDto.id
     );
   }
 
