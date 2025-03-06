@@ -47,6 +47,13 @@ public class TaskController {
 
   }
 
+  @GetMapping("/list/{userId}")
+  public ResponseEntity<List<TaskResponseDto>> getTasks (@PathVariable Integer userId) {
+
+
+
+  }
+
   @PostMapping()
   public ResponseEntity<TaskResponseDto> createTask (@RequestBody TaskCreationDto taskCreationDto)
       throws UserNotFoundException {

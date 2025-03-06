@@ -63,6 +63,14 @@ public class TaskServiceTest {
   @Test
   @DisplayName("Testa a listagem de tarefas")
   void listTasksTest () {
+
+    for (int i = 0; i < 5; i++) {
+      Task task = makeTask("Damn bro" + Integer.toString(i));
+    }
+
+
+
+
   }
 
   @Test

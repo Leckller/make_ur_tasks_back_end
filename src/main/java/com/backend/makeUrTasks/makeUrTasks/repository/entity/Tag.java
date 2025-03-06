@@ -26,6 +26,26 @@ public class Tag {
   )
   private List<Task> tasks;
 
+  public Integer getId() { return id; }
+
+  public void setId(Integer id) { this.id = id; }
+
+  public String getColor() { return Color; }
+
+  public void setColor(String color) { Color = color; }
+
+  public String getName() { return Name; }
+
+  public void setName(String name) { Name = name; }
+
+  public User getUser() { return user; }
+
+  public void setUser(User user) { this.user = user; }
+
+  public List<Task> getTasks() { return tasks; }
+
+  public void setTasks(List<Task> tasks) { this.tasks = tasks; }
+
   public Tag() {}
 
 }

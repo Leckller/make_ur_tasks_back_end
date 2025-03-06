@@ -101,4 +101,13 @@ public class Task  {
     this.finished = !this.finished;
   }
 
+  public void setFinished(boolean finished) { this.finished = finished; }
+
+  public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+
+  public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
+
+  public List<Tag> getTags() { return tags; }
+
+  public void setTags(List<Tag> tags) { this.tags = tags; }
 }
