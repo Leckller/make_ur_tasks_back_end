@@ -1,10 +1,13 @@
 package com.backend.makeUrTasks.makeUrTasks.controller;
 
-import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
-import com.backend.makeUrTasks.makeUrTasks.dto.TaskRequestDto;
-import com.backend.makeUrTasks.makeUrTasks.dto.TaskResponseDto;
+import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskCreationDto;
+import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskGetByIdDto;
+import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskResponseDto;
+import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.backend.makeUrTasks.makeUrTasks.service.TaskService;
-import org.apache.coyote.BadRequestException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NoPermissionException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.TaskNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +25,7 @@ public class TaskController {
   private final TaskService taskService;
 
   /**
-   * Construtor da Classe, aqui é instanciado por injeção de dependência a service das tarefas.s
+   * Construtor da Classe, aqui é instanciado por injeção de dependência a service das tarefas.
    */
   @Autowired
   public TaskController (TaskService taskService){
@@ -30,52 +33,40 @@ public class TaskController {
   }
 
   /**
-   * Retorna as tarefas.
-   */
-  @GetMapping(path = "/list/{page}")
-  public ResponseEntity<List<TaskResponseDto>> listTasks (@PathVariable Integer page) {
-
-    List<AbstractTask> tasks = this.taskService.listTasks(1, page);
-
-    List<TaskResponseDto> tasksDto = tasks.stream().map(TaskResponseDto::new).toList();
-
-    return ResponseEntity.status(HttpStatus.OK).body(tasksDto);
-
-  }
-
-  /**
    * Retorna uma tarefa que tenha o "id" passado por parâmetro.
    */
-  @GetMapping(path = "/id/{id}")
-  public ResponseEntity<TaskResponseDto> getTaskById (@PathVariable Integer id) {
+  @GetMapping("/{taskId}/user/{userId}")
+  public ResponseEntity<TaskResponseDto> getTaskById (@PathVariable Integer taskId, @PathVariable Integer userId)
+      throws UserNotFoundException, TaskNotFoundException, NoPermissionException {
 
-    AbstractTask task = this.taskService.getTaskById(id, 1);
-    TaskResponseDto taskDto = new TaskResponseDto(task);
+    Task task = this.taskService.findTaskById(userId, taskId);
 
-    return  ResponseEntity.status(HttpStatus.OK).body(taskDto);
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(TaskResponseDto.fromEntity(task));
 
   }
 
-  /**
-   * Retorna uma tarefa que tenha o nome correspondente ao passado por parâmetro.
-   */
-  @GetMapping(path = "/title/{title}")
-  public ResponseEntity<TaskResponseDto> getTaskByTitle (@PathVariable String title) {
+  @GetMapping("/list/{userId}")
+  public ResponseEntity<List<TaskResponseDto>> getTasks (@PathVariable Integer userId)
+      throws UserNotFoundException {
 
-    AbstractTask task = this.taskService.getTaskByTitle(title, 1);
-    TaskResponseDto taskDto = new TaskResponseDto(task);
+    List<Task> tasks = this.taskService.listTasks(userId);
 
-    return  ResponseEntity.status(HttpStatus.OK).body(taskDto);
-
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(tasks.stream().map(TaskResponseDto::fromEntity).toList());
   }
 
   @PostMapping()
-  public ResponseEntity<TaskResponseDto> createTask (@RequestBody TaskRequestDto request) {
+  public ResponseEntity<TaskResponseDto> createTask (@RequestBody TaskCreationDto taskCreationDto)
+      throws UserNotFoundException {
 
-    AbstractTask task = this.taskService.createTask(request.title, request.description, request.userId);
-    TaskResponseDto taskDto = new TaskResponseDto(task);
+    Task task = this.taskService.createTask(taskCreationDto);
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(taskDto);
+    return ResponseEntity
+        .status(HttpStatus.CREATED)
+        .body(TaskResponseDto.fromEntity(task));
 
   }
 

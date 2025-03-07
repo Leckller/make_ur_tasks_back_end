@@ -1,15 +1,21 @@
 package com.backend.makeUrTasks.makeUrTasks.service;
 
-import com.backend.makeUrTasks.makeUrTasks.abstractClasses.AbstractTask;
-import com.backend.makeUrTasks.makeUrTasks.exceptions.InvalidFieldsException;
-import com.backend.makeUrTasks.makeUrTasks.exceptions.TaskNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskCreationDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.TaskRepository;
-import org.apache.coyote.BadRequestException;
+import com.backend.makeUrTasks.makeUrTasks.repository.UserRepository;
+import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
+import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NoPermissionException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.TaskNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Service das Tarefas.
@@ -17,62 +23,49 @@ import java.util.Optional;
 @Service
 public class TaskService {
 
-  private final TaskRepository taskRepo;
+  private final TaskRepository taskRepository;
+  private final UserRepository userRepository;
+  private final UserService userService;
 
-  /**
-   * Construtor da classe, aqui é injetado a model.
-   */
   @Autowired
-  public TaskService (TaskRepository taskRepo){
-    this.taskRepo = taskRepo;
+  public TaskService(TaskRepository taskRepository, UserRepository userRepository, UserService userService) {
+    this.taskRepository = taskRepository;
+    this.userRepository = userRepository;
+    this.userService = userService;
   }
 
-  public ArrayList<AbstractTask> listTasks (Integer userId, Integer page) {
-    if (userId < 0 || page < 0) {
-      throw new InvalidFieldsException("userId or page must be a natural number");
+  public Task findTaskById(Integer userId, Integer taskId)
+      throws UserNotFoundException, TaskNotFoundException, NoPermissionException {
+
+    User user = this.userService.findUserById(userId);
+
+    Task task = this.taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+
+    if(!Objects.equals(task.getUser().getId(), userId)) {
+      throw new NoPermissionException();
     }
 
-    return this.taskRepo.find(userId, page).orElseThrow(TaskNotFoundException::new);
-
-  }
-
-  public AbstractTask getTaskById (Integer taskId, Integer userId) {
-    if (userId <= 0 || taskId <= 0) {
-      throw new InvalidFieldsException("userId or taskId must be a Integer");
-    }
-
-    return this.taskRepo.findById(taskId, userId).orElseThrow(TaskNotFoundException::new);
-
-  }
-
-  public AbstractTask getTaskByTitle (String title, Integer userId) {
-    if (userId <= 0) {
-      throw new InvalidFieldsException("userId must be a Integer.");
-    } if (title.isEmpty()) {
-      throw new InvalidFieldsException("title must be a string.");
-    }
-
-    Optional<AbstractTask> task = this.taskRepo.findByTitle(title, userId);
-
-    if(task.isEmpty()){
-      throw new TaskNotFoundException();
-    }
-
-    return task.get();
+    return task;
 
   }
 
-  public AbstractTask createTask (String title, String description, Integer userId) {
+  public Task createTask(TaskCreationDto taskCreationDto)
+      throws UserNotFoundException {
 
-    if (title == null) {
-      throw new InvalidFieldsException("title must be a string");
-    } else if (description == null) {
-      throw new InvalidFieldsException("description must be a string");
-    } else if (userId <= 0) {
-      throw new InvalidFieldsException("userId must be a Integer");
-    }
+    User user = this.userService.findUserById(taskCreationDto.userId());
 
-    return this.taskRepo.create(title, userId, description).orElseThrow(TaskNotFoundException::new);
+    Task task = new Task(taskCreationDto, user);
+
+    return this.taskRepository.save(task);
+
+  }
+
+  public List<Task> listTasks(Integer userId)
+      throws UserNotFoundException {
+
+    User user = this.userService.findUserById(userId);
+
+    return user.getTasks();
 
   }
 
