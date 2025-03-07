@@ -1,13 +1,21 @@
 package com.backend.makeUrTasks.makeUrTasks.service;
 
-import com.backend.makeUrTasks.makeUrTasks.dto.TarefaDto;
-import com.backend.makeUrTasks.makeUrTasks.model.TaskModel;
+import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskCreationDto;
+import com.backend.makeUrTasks.makeUrTasks.repository.TaskRepository;
+import com.backend.makeUrTasks.makeUrTasks.repository.UserRepository;
+import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
+import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NoPermissionException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.TaskNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import static org.apache.coyote.http11.Constants.a;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Service das Tarefas.
@@ -15,27 +23,49 @@ import static org.apache.coyote.http11.Constants.a;
 @Service
 public class TaskService {
 
-  private final TaskModel taskModel;
+  private final TaskRepository taskRepository;
+  private final UserRepository userRepository;
+  private final UserService userService;
 
-  /**
-   * Construtor da classe, aqui é injetado a model.
-   */
   @Autowired
-  public TaskService (TaskModel taskModel){
-    this.taskModel = taskModel;
+  public TaskService(TaskRepository taskRepository, UserRepository userRepository, UserService userService) {
+    this.taskRepository = taskRepository;
+    this.userRepository = userRepository;
+    this.userService = userService;
   }
 
-  public ResponseEntity<String> novaTarefa (String titulo) {
+  public Task findTaskById(Integer userId, Integer taskId)
+      throws UserNotFoundException, TaskNotFoundException, NoPermissionException {
 
-    try {
+    User user = this.userService.findUserById(userId);
 
+    Task task = this.taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
 
-
-      return ResponseEntity.status(HttpStatus.OK).body();
-
-    } catch (RuntimeException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro");
+    if(!Objects.equals(task.getUser().getId(), userId)) {
+      throw new NoPermissionException();
     }
+
+    return task;
+
+  }
+
+  public Task createTask(TaskCreationDto taskCreationDto)
+      throws UserNotFoundException {
+
+    User user = this.userService.findUserById(taskCreationDto.userId());
+
+    Task task = new Task(taskCreationDto, user);
+
+    return this.taskRepository.save(task);
+
+  }
+
+  public List<Task> listTasks(Integer userId)
+      throws UserNotFoundException {
+
+    User user = this.userService.findUserById(userId);
+
+    return user.getTasks();
 
   }
 
