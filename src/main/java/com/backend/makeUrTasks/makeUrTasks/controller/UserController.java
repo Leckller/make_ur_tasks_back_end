@@ -6,8 +6,10 @@ import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserLoginDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.backend.makeUrTasks.makeUrTasks.service.TaskService;
 import com.backend.makeUrTasks.makeUrTasks.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,15 +28,17 @@ public class UserController {
     this.taskService = taskService;
   }
 
-  public ResponseEntity<String> register(UserCreationDto userCreationDto) {
+  public ResponseEntity<String> register(@Valid @RequestBody UserCreationDto userCreationDto) {
     return null;
   }
 
-  public ResponseEntity<String> login(UserCreationDto userCreationDto) {
+  public ResponseEntity<String> login(@Valid @RequestBody UserCreationDto userCreationDto) {
+
     return null;
   }
 
-  public ResponseEntity<List<TaskResponseDto>> userTasks(UserLoginDto userLoginDto) {
+  public ResponseEntity<List<TaskResponseDto>> userTasks(@Valid @RequestBody UserLoginDto userLoginDto) {
+
     return null;
   }
 
