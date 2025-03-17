@@ -15,4 +15,8 @@ public record UserCreationDto(
     @Size(min=8, message="Password must have at least 8 characters")
     @NotBlank(message="Password is required")
     String password
-) { }
+) {
+
+
+
+}
