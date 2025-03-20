@@ -1,16 +1,14 @@
 package com.backend.makeUrTasks.makeUrTasks.controller;
 
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskCreationDto;
-import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskGetByIdDto;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskResponseDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.backend.makeUrTasks.makeUrTasks.service.TaskService;
-import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NoPermissionException;
-import com.backend.makeUrTasks.makeUrTasks.service.exceptions.TaskNotFoundException;
 import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,26 +30,14 @@ public class TaskController {
     this.taskService = taskService;
   }
 
-  /**
-   * Retorna uma tarefa que tenha o "id" passado por parâmetro.
-   */
-  @GetMapping("/{taskId}/user/{userId}")
-  public ResponseEntity<TaskResponseDto> getTaskById (@PathVariable Integer taskId, @PathVariable Integer userId)
-      throws UserNotFoundException, TaskNotFoundException, NoPermissionException {
+  @GetMapping
+  public ResponseEntity<List<TaskResponseDto>> getTasks (
+      @RequestParam(required = false, defaultValue = "0") Integer page
+  ) throws UserNotFoundException {
 
-    Task task = this.taskService.findTaskById(userId, taskId);
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    return ResponseEntity
-        .status(HttpStatus.OK)
-        .body(TaskResponseDto.fromEntity(task));
-
-  }
-
-  @GetMapping("/list/{userId}")
-  public ResponseEntity<List<TaskResponseDto>> getTasks (@PathVariable Integer userId)
-      throws UserNotFoundException {
-
-    List<Task> tasks = this.taskService.listTasks(userId);
+    List<Task> tasks = this.taskService.listTasks(page, username);
 
     return ResponseEntity
         .status(HttpStatus.OK)

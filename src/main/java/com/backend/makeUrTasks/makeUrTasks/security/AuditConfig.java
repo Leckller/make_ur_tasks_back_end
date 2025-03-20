@@ -1,4 +1,4 @@
-package com.backend.makeUrTasks.makeUrTasks;
+package com.backend.makeUrTasks.makeUrTasks.security;
 
 import com.backend.makeUrTasks.makeUrTasks.security.audit.AuditorAwareUser;
 import org.springframework.context.annotation.Bean;

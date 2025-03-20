@@ -27,29 +27,21 @@ public class Task  {
   @UpdateTimestamp
   private Date updatedAt = new Date();
 
-  private String description;
-  private String conclusionNotes;
-
-  @ManyToOne(optional = false)
   // Torna essa coluna responsável pelo relocionamento.
+  @ManyToOne(optional = false)
   @JoinColumn(name = "user_id")
   User user;
-
-  @ManyToMany(mappedBy = "tasks")
-  private List<Tag> tags;
 
   public Task() {}
 
   public Task(TaskCreationDto taskCreationDto) {
     this.title = taskCreationDto.title();
-    this.description = taskCreationDto.description();
   }
 
   // From json
-  public Task(Integer id, String title, String description, Boolean finished, Date created_at, Date updated_at) {
+  public Task(Integer id, String title, Boolean finished, Date created_at, Date updated_at) {
     this.id = id;
     this.title = title;
-    this.description = description;
     this.finished = finished;
     this.createdAt = created_at;
     this.updatedAt = updated_at;
@@ -57,7 +49,6 @@ public class Task  {
 
   public Task(TaskCreationDto taskCreationDto, User user) {
     this.title = taskCreationDto.title();
-    this.description = taskCreationDto.description();
     this.user = user;
   }
 
@@ -85,28 +76,12 @@ public class Task  {
     return updatedAt;
   }
 
-  public String getConclusionNotes() {
-    return conclusionNotes;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
   public String getTitle() {
     return title;
   }
 
-  public void setConclusionNotes(String conclusionNotes) {
-    this.conclusionNotes = conclusionNotes;
-  }
-
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public void setFinished() {
@@ -119,7 +94,4 @@ public class Task  {
 
   public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 
-  public List<Tag> getTags() { return tags; }
-
-  public void setTags(List<Tag> tags) { this.tags = tags; }
 }

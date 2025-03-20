@@ -16,7 +16,6 @@ public record TaskResponseDto (
     boolean finished,
     Date createdAt,
     Date updatedAt,
-    String description,
     Integer id
 ) {
 
@@ -26,7 +25,6 @@ public record TaskResponseDto (
         task.isFinished(),
         task.getCreatedAt(),
         task.getUpdatedAt(),
-        task.getDescription(),
         task.getId()
     );
   }
@@ -37,7 +35,6 @@ public record TaskResponseDto (
         taskResponseDto.finished,
         taskResponseDto.createdAt,
         taskResponseDto.updatedAt,
-        taskResponseDto.description,
         taskResponseDto.id
     );
   }

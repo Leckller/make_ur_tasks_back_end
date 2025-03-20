@@ -10,16 +10,6 @@ public record TaskCreationDto (
     @Size(min=3, message="Title must have at least 8 characters")
     String title,
 
-    @Size(min=3, message="Title must have at least 8 characters")
-    @NotBlank(message="Description is required")
-    String description,
-
-    @NotBlank(message="UserId is required")
-    Integer userId
-) {
-
-  public static TaskCreationDto makeDto (String title, String description, Integer userId) {
-    return new TaskCreationDto(title, description, userId);
-  }
-
-}
+    @NotBlank(message="Username is required")
+    String username
+) { }

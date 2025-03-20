@@ -45,9 +45,6 @@ public class User implements UserDetails {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   List<Task> tasks;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-  List<Tag> tags;
-
   public User() {}
 
   public User(UserCreationDto userCreationDto) {
@@ -116,14 +113,6 @@ public class User implements UserDetails {
 
   public void setUpdatedAt(Date updatedAt) {
     this.updatedAt = updatedAt;
-  }
-
-  public List<Tag> getTags() {
-    return tags;
-  }
-
-  public void setTags(List<Tag> tags) {
-    this.tags = tags;
   }
 
   @Override
