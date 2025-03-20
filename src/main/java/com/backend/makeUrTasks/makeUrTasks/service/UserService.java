@@ -1,15 +1,18 @@
 package com.backend.makeUrTasks.makeUrTasks.service;
 
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserCreationDto;
-import com.backend.makeUrTasks.makeUrTasks.repository.TaskRepository;
 import com.backend.makeUrTasks.makeUrTasks.repository.UserRepository;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
 import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
 
@@ -27,10 +30,23 @@ public class UserService {
 
   public User createUser(UserCreationDto userCreationDto) {
 
+    String hashedPassword = new BCryptPasswordEncoder()
+        .encode(userCreationDto.password());
+
     User user = new User(userCreationDto);
+    user.setPassword(hashedPassword);
 
     return this.userRepository.save(user);
 
   }
 
+  /**
+   * Encontra um usuário pelo nome
+   */
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return this.userRepository
+        .findByUsername(username)
+        .orElseThrow(() -> new UsernameNotFoundException(username));
+  }
 }

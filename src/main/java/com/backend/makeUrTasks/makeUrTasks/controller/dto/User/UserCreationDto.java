@@ -8,6 +8,9 @@ public record UserCreationDto(
     @NotBlank(message="Name is required")
     String name,
 
+    @NotBlank(message="Name is required")
+    String username,
+
     @Email(message="Email must be valid")
     @NotBlank(message="Email is required")
     String email,
