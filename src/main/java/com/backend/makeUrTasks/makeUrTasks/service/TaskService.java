@@ -35,7 +35,7 @@ public class TaskService {
       throws UserNotFoundException {
 
     User user = this.userService
-        .findUserByUsername(username);
+        .findByUsername(username);
 
     Task task = new Task(taskCreationDto, user);
 
