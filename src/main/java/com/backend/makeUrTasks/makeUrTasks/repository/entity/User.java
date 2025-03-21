@@ -1,21 +1,38 @@
 package com.backend.makeUrTasks.makeUrTasks.repository.entity;
 
+import com.backend.makeUrTasks.makeUrTasks.Listener.EmailListener;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserCreationDto;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class User {
+@Table(name = "users")
+// Implementar uma lógica de confirmação de conta por email.
+// @EntityListeners(EmailListener.class)
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  private String name;
+
+  @Column(unique = true)
   private String email;
+  private String name;
+  private String role = "USER";
+
+  @Column(unique = true)
+  private String username;
   private String password;
 
   @CreationTimestamp
@@ -26,15 +43,13 @@ public class User {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   List<Task> tasks;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-  List<Tag> tags;
-
   public User() {}
 
   public User(UserCreationDto userCreationDto) {
     this.name = userCreationDto.name();
     this.email = userCreationDto.email();
     this.password = userCreationDto.password();
+    this.username = userCreationDto.username();
   }
 
   public Integer getId() {
@@ -53,6 +68,14 @@ public class User {
     this.name = name;
   }
 
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
+  }
+
   public String getEmail() {
     return email;
   }
@@ -61,8 +84,58 @@ public class User {
     this.email = email;
   }
 
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role));
+  }
+
   public String getPassword() {
     return password;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public Date getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public Date getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  @Override
+  public String getUsername() {
+    return this.username;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 
   public void setPassword(String password) {
