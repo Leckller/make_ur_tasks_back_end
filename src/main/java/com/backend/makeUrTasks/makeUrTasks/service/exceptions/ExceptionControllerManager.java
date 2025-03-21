@@ -24,6 +24,14 @@ public class ExceptionControllerManager {
             .body(exception.getMessage());
   }
 
+  @ExceptionHandler()
+  public ResponseEntity<String> handleAlreadyExists(AlreadyExistsException exception) {
+    return ResponseEntity
+        .status(HttpStatus.FORBIDDEN)
+        .body(exception.getMessage());
+  }
+
+
   @ExceptionHandler(ConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public Map<String, String> handleConstraintViolationError(ConstraintViolationException exception) {

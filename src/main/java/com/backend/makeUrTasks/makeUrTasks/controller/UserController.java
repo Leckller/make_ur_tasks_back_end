@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
   private final UserService userService;
-  private final TaskService taskService;
   private final TokenService tokenService;
 
   @Autowired
-  public UserController(UserService userService, TaskService taskService, TokenService tokenService) {
+  public UserController(UserService userService, TokenService tokenService) {
     this.userService = userService;
-    this.taskService = taskService;
     this.tokenService = tokenService;
   }
 

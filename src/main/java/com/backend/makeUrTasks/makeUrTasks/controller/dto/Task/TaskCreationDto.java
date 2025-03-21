@@ -8,8 +8,5 @@ import jakarta.validation.constraints.Size;
 public record TaskCreationDto (
     @NotBlank(message="Title is required")
     @Size(min=3, message="Title must have at least 8 characters")
-    String title,
-
-    @NotBlank(message="Username is required")
-    String username
+    String title
 ) { }

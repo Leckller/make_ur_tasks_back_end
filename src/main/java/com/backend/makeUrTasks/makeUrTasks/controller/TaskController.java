@@ -48,7 +48,9 @@ public class TaskController {
   public ResponseEntity<TaskResponseDto> createTask (@RequestBody TaskCreationDto taskCreationDto)
       throws UserNotFoundException {
 
-    Task task = this.taskService.createTask(taskCreationDto);
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Task task = this.taskService.createTask(taskCreationDto, username);
 
     return ResponseEntity
         .status(HttpStatus.CREATED)

@@ -1,18 +1,15 @@
 package com.backend.makeUrTasks.makeUrTasks.repository.entity;
 
-import com.backend.makeUrTasks.makeUrTasks.Listener.ScheduleListener;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskCreationDto;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
-import java.util.List;
 
 
 @Entity
 @Table(name = "tasks")
-@EntityListeners(ScheduleListener.class)
 public class Task  {
 
   @Id

@@ -1,5 +1,6 @@
 package com.backend.makeUrTasks.makeUrTasks.repository.entity;
 
+import com.backend.makeUrTasks.makeUrTasks.Listener.EmailListener;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserCreationDto;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,25 +18,22 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
+// Implementar uma lógica de confirmação de conta por email.
+// @EntityListeners(EmailListener.class)
 public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  private String name;
+  @Column(unique = true)
   private String email;
-  private String role;
+  private String name;
+  private String role = "USER";
 
   @Column(unique = true)
   private String username;
   private String password;
-
-  @CreatedBy
-  private String createdBy;
-  @LastModifiedBy
-  private String modifiedBy;
 
   @CreationTimestamp
   private Date createdAt;

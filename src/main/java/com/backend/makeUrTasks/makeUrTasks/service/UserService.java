@@ -2,20 +2,15 @@ package com.backend.makeUrTasks.makeUrTasks.service;
 
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserCreationDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.UserRepository;
-import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
-import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -29,14 +24,26 @@ public class UserService implements UserDetailsService {
 
   public User createUser(UserCreationDto userCreationDto) {
 
+    this.userExists(userCreationDto.username(), userCreationDto.email());
+
     String hashedPassword = new BCryptPasswordEncoder()
         .encode(userCreationDto.password());
 
-    User user = new User(userCreationDto);
+    User user = new User();
+
+    user.setName(userCreationDto.name());
+    user.setUsername(userCreationDto.username());
+    user.setEmail(userCreationDto.email());
     user.setPassword(hashedPassword);
 
     return this.userRepository.save(user);
 
+  }
+
+  public void userExists(String username, String email) throws UsernameNotFoundException  {
+    if (this.userRepository.findByUsername(username).isPresent() || this.userRepository.findByEmail(email).isPresent()) {
+        throw new UserAlreadyExistsException();
+    }
   }
 
   public User findUserByUsername(String username) throws UsernameNotFoundException {

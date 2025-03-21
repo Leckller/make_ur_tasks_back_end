@@ -11,9 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Objects;
+
 
 /**
  * Service das Tarefas.
@@ -32,11 +31,11 @@ public class TaskService {
     this.userService = userService;
   }
 
-  public Task createTask(TaskCreationDto taskCreationDto)
+  public Task createTask(TaskCreationDto taskCreationDto, String username)
       throws UserNotFoundException {
 
     User user = this.userService
-        .findUserByUsername(taskCreationDto.username());
+        .findUserByUsername(username);
 
     Task task = new Task(taskCreationDto, user);
 
@@ -47,7 +46,7 @@ public class TaskService {
   public List<Task> listTasks(Integer page, String username)
       throws UserNotFoundException {
 
-    Pageable pageable = PageRequest.of(page, 2);
+    Pageable pageable = PageRequest.of(page, 15);
 
     User user = (User) this.userService.loadUserByUsername(username);
 

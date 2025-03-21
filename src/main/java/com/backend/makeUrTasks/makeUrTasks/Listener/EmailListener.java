@@ -1,25 +1,26 @@
 package com.backend.makeUrTasks.makeUrTasks.Listener;
 
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
+import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
 import com.backend.makeUrTasks.makeUrTasks.service.EmailService;
 import jakarta.persistence.PostPersist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ScheduleListener {
+public class EmailListener {
 
   private EmailService emailService;
 
   @Autowired
-  public ScheduleListener(EmailService emailService) {
+  public EmailListener(EmailService emailService) {
     this.emailService = emailService;
   }
 
   @PostPersist
-  public void postUpdate(Task task){
-    String message = String.format("Olha só o bglh funcionando" + task.getTitle());
+  public void userCreated(User user){
+    String message = "Seja bem vindo %s!".formatted(user.getName());
 
-    emailService.sendEmail("gusttavoruynascimento@gmail.com", "testando", message);
+    emailService.sendEmail(user.getEmail(), "Criação de conta - Make ur Tasks", message);
   }
 }
