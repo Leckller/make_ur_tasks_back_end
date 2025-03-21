@@ -1,41 +1,41 @@
 package com.backend.makeUrTasks.makeUrTasks.controller;
 
-import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskResponseDto;
+import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.TokenDto;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserCreationDto;
-import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserLoginDto;
-import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
+import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
 import com.backend.makeUrTasks.makeUrTasks.service.TaskService;
+import com.backend.makeUrTasks.makeUrTasks.service.TokenService;
 import com.backend.makeUrTasks.makeUrTasks.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
   private final UserService userService;
-  private final TaskService taskService;
+  private final TokenService tokenService;
 
   @Autowired
-  public UserController(UserService userService, TaskService taskService) {
+  public UserController(UserService userService, TokenService tokenService) {
     this.userService = userService;
-    this.taskService = taskService;
+    this.tokenService = tokenService;
   }
 
-  public ResponseEntity<String> register(UserCreationDto userCreationDto) {
-    return null;
-  }
+  @PostMapping
+  public ResponseEntity<TokenDto> createUser(@Valid @RequestBody UserCreationDto userCreationDto) {
 
-  public ResponseEntity<String> login(UserCreationDto userCreationDto) {
-    return null;
-  }
+    User user = this.userService.createUser(userCreationDto);
 
-  public ResponseEntity<List<TaskResponseDto>> userTasks(UserLoginDto userLoginDto) {
-    return null;
+    String token = this.tokenService.generateToken(user.getUsername());
+
+    return ResponseEntity
+        .status(HttpStatus.CREATED)
+        .body(new TokenDto(token));
+
   }
 
 }
