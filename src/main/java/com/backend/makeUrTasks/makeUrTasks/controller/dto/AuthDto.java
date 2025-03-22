@@ -1,3 +1,10 @@
 package com.backend.makeUrTasks.makeUrTasks.controller.dto;
 
-public record AuthDto(String username, String password) { }
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record AuthDto(
+    @JsonProperty("username")
+    String username,
+    @JsonProperty("password")
+    String password
+) { }

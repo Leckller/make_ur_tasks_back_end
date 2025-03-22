@@ -66,5 +66,4 @@ public class ExceptionControllerManager {
             .body("Erro interno não tratado - " + exception.getMessage());
   }
 
-
 }

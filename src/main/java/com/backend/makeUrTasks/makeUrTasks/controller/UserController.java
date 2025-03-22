@@ -3,7 +3,6 @@ package com.backend.makeUrTasks.makeUrTasks.controller;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.TokenDto;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserCreationDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
-import com.backend.makeUrTasks.makeUrTasks.service.TaskService;
 import com.backend.makeUrTasks.makeUrTasks.service.TokenService;
 import com.backend.makeUrTasks.makeUrTasks.service.UserService;
 import jakarta.validation.Valid;
