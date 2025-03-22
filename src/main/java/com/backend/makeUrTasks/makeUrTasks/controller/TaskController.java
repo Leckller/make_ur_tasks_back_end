@@ -4,7 +4,7 @@ import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskCreationDto;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskResponseDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.backend.makeUrTasks.makeUrTasks.service.TaskService;
-import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NotFound.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

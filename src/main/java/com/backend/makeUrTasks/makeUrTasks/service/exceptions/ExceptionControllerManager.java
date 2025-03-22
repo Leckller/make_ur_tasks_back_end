@@ -1,8 +1,9 @@
 package com.backend.makeUrTasks.makeUrTasks.service.exceptions;
 
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.AlreadyExists.AlreadyExistsException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NotFound.NotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -18,45 +19,42 @@ import java.util.Map;
 public class ExceptionControllerManager {
 
   @ExceptionHandler()
-  public ResponseEntity<String> handleNotFound(NotFoundException exception) {
+  public ResponseEntity<MessageDto> handleNotFound(NotFoundException exception) {
     return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(exception.getMessage());
+            .body(new MessageDto(exception.getMessage()));
   }
 
   @ExceptionHandler()
-  public ResponseEntity<String> handleAlreadyExists(AlreadyExistsException exception) {
+  public ResponseEntity<MessageDto> handleAlreadyExists(AlreadyExistsException exception) {
     return ResponseEntity
         .status(HttpStatus.FORBIDDEN)
-        .body(exception.getMessage());
+        .body(new MessageDto(exception.getMessage()));
   }
 
 
   @ExceptionHandler(ConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public Map<String, String> handleConstraintViolationError(ConstraintViolationException exception) {
+  public ResponseEntity<Map<String, String>> handleConstraintViolationError(ConstraintViolationException exception) {
     Map<String, String> errors = new HashMap<>();
     for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
       errors.put(violation.getPropertyPath().toString(), violation.getMessage());
     }
-    return errors;
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(errors);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public Map<String, String> handleMethodArgumentNotValidError(MethodArgumentNotValidException exception) {
+  public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidError(MethodArgumentNotValidException exception) {
     Map<String, String> errors = new HashMap<>();
     for (FieldError error : exception.getBindingResult().getFieldErrors()) {
       errors.put(error.getField(), error.getDefaultMessage());
     }
-    return errors;
-  }
-
-  @ExceptionHandler()
-  public ResponseEntity<String> handleInvalidFields(BadRequestException exception) {
     return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(exception.getMessage());
+        .status(HttpStatus.BAD_REQUEST)
+        .body(errors);
   }
 
   @ExceptionHandler()
@@ -65,6 +63,5 @@ public class ExceptionControllerManager {
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body("Erro interno não tratado - " + exception.getMessage());
   }
-
 
 }

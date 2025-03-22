@@ -12,10 +12,15 @@ import java.util.Date;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record TaskResponseDto (
+    @JsonProperty("title")
     String title,
+    @JsonProperty("finished")
     boolean finished,
+    @JsonProperty("createdAt")
     Date createdAt,
+    @JsonProperty("updatedAt")
     Date updatedAt,
+    @JsonProperty("id")
     Integer id
 ) {
 
