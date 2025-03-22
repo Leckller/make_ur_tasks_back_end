@@ -5,7 +5,7 @@ import com.backend.makeUrTasks.makeUrTasks.repository.TaskRepository;
 import com.backend.makeUrTasks.makeUrTasks.repository.UserRepository;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
-import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NotFound.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

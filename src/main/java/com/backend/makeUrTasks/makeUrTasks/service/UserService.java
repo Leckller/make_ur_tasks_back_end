@@ -3,7 +3,7 @@ package com.backend.makeUrTasks.makeUrTasks.service;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserCreationDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.UserRepository;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
-import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserAlreadyExistsException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.AlreadyExists.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

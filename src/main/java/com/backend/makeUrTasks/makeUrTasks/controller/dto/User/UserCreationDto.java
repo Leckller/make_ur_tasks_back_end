@@ -8,25 +8,21 @@ import jakarta.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record UserCreationDto(
-    @NotBlank(message="Name is required")
+    @NotBlank(message="O Nome é obrigatório")
     @JsonProperty("name")
     String name,
 
-    @NotBlank(message="Name is required")
+    @NotBlank(message="O Username é obrigatório")
     @JsonProperty("username")
     String username,
 
-    @Email(message="Email must be valid")
-    @NotBlank(message="Email is required")
+    @Email(message="Formato de email inválido")
+    @NotBlank(message="O Email é obrigatório")
     @JsonProperty("email")
     String email,
 
-    @Size(min=8, message="Password must have at least 8 characters")
-    @NotBlank(message="Password is required")
+    @Size(min=8, message="A senha deve ter pelo menos 8 caracteres")
+    @NotBlank(message="A senha é obrigatória")
     @JsonProperty("password")
     String password
-) {
-
-
-
-}
+) { }
