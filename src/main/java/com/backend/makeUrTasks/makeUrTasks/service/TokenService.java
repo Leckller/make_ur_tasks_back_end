@@ -22,7 +22,6 @@ public class TokenService {
   public String generateToken(String username) {
     return JWT.create()
         .withSubject(username)
-        .withExpiresAt(generateExpiration())
         .sign(algorithm);
   }
 
