@@ -5,6 +5,7 @@ COPY .mvn/ .mvn
 COPY ./src/main/ ./src/main/
 COPY mvnw pom.xml ./
 
+RUN chmod +x mvnw
 RUN ./mvnw clean package
 
 FROM eclipse-temurin:21-jre-jammy
