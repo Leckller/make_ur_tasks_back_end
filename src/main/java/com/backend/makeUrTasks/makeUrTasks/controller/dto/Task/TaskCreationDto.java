@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record TaskCreationDto (
     @NotBlank(message="Title is required")
-    @Size(min=3, message="Title must have at least 8 characters")
+    @Size(min=3, message="Title must have at least 8 characters", max = 250)
     @JsonProperty("title")
     String title
 ) { }
