@@ -4,7 +4,8 @@ import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskCreationDto;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskResponseDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.backend.makeUrTasks.makeUrTasks.service.TaskService;
-import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NoPermissionException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NotFound.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/task")
+@CrossOrigin()
 public class TaskController {
 
   private final TaskService taskService;
@@ -55,6 +57,35 @@ public class TaskController {
     return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(TaskResponseDto.fromEntity(task));
+
+  }
+
+  @PatchMapping("/{id}")
+  public ResponseEntity<TaskResponseDto> toggleTask (
+      @PathVariable Integer id
+  ) throws UserNotFoundException, NoPermissionException {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Task task = this.taskService.toggleTask(id, username);
+
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(TaskResponseDto.fromEntity(task));
+
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity deleteTask (
+      @PathVariable Integer id
+  ) throws UserNotFoundException, NoPermissionException {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    this.taskService.deleteTask(id, username);
+
+    return ResponseEntity
+        .status(HttpStatus.OK).build();
 
   }
 

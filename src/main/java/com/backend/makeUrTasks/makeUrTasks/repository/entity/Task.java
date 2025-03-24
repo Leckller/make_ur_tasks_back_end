@@ -81,7 +81,7 @@ public class Task  {
     this.title = title;
   }
 
-  public void setFinished() {
+  public void toggleFinished() {
     this.finished = !this.finished;
   }
 
