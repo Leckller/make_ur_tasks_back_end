@@ -4,7 +4,7 @@ import com.backend.makeUrTasks.makeUrTasks.controller.dto.Task.TaskCreationDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.TaskRepository;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.Task;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
-import com.backend.makeUrTasks.makeUrTasks.service.exceptions.UserNotFoundException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NotFound.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
