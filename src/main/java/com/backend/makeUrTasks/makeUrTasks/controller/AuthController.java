@@ -4,6 +4,7 @@ import com.backend.makeUrTasks.makeUrTasks.controller.dto.AuthDto;
 import com.backend.makeUrTasks.makeUrTasks.controller.dto.TokenDto;
 import com.backend.makeUrTasks.makeUrTasks.service.TokenService;
 import com.backend.makeUrTasks.makeUrTasks.service.UserService;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.InvalidFieldsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,9 +28,9 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public TokenDto login(@RequestBody AuthDto authDto) {
+  public TokenDto login(@RequestBody AuthDto authDto) throws InvalidFieldsException {
 
-    this.userService.findByUsername(authDto.username());
+    this.userService.validFields(authDto.username(), authDto.password());
 
     UsernamePasswordAuthenticationToken usernamePassword =
         new UsernamePasswordAuthenticationToken(authDto.username(), authDto.password());
