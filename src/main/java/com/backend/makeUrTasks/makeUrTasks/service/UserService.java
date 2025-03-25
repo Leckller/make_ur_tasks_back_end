@@ -4,6 +4,7 @@ import com.backend.makeUrTasks.makeUrTasks.controller.dto.User.UserCreationDto;
 import com.backend.makeUrTasks.makeUrTasks.repository.UserRepository;
 import com.backend.makeUrTasks.makeUrTasks.repository.entity.User;
 import com.backend.makeUrTasks.makeUrTasks.service.exceptions.AlreadyExists.UserAlreadyExistsException;
+import com.backend.makeUrTasks.makeUrTasks.service.exceptions.InvalidFieldsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,15 +12,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 
 @Service
 public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
+  private final TokenService tokenService;
 
   @Autowired
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, TokenService tokenService) {
     this.userRepository = userRepository;
+    this.tokenService = tokenService;
   }
 
   public User createUser(UserCreationDto userCreationDto) {
@@ -50,6 +55,17 @@ public class UserService implements UserDetailsService {
     return this.userRepository
         .findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException(username));
+  }
+
+  public void validFields(String username, String password) throws InvalidFieldsException {
+    User user = this.userRepository.findByUsername(username)
+        .orElseThrow(InvalidFieldsException::new);
+
+    String dbPass = this.tokenService.validateToken(user.getPassword());
+
+    if(!Objects.equals(dbPass, password)) {
+      throw new InvalidFieldsException();
+    }
   }
 
   /**

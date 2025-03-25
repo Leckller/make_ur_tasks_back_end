@@ -4,6 +4,7 @@ import com.backend.makeUrTasks.makeUrTasks.service.exceptions.AlreadyExists.Alre
 import com.backend.makeUrTasks.makeUrTasks.service.exceptions.NotFound.NotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.naming.AuthenticationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,13 @@ public class ExceptionControllerManager {
     return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(new MessageDto(exception.getMessage()));
+  }
+
+  @ExceptionHandler()
+  public ResponseEntity<MessageDto> handleInvalidFields(BadRequestException exception) {
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(new MessageDto(exception.getMessage()));
   }
 
   @ExceptionHandler()
